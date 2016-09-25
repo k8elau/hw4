@@ -1,0 +1,54 @@
+*{
+	font-family: 'Quicksand';
+	align:center;
+}
+
+body{
+	background-image:url(../bkgd.jpg);
+}
+
+form{
+	text-align:center;
+}
+div{
+	width: 280px;
+	height: 80px;
+	display:inline-block;
+	position: static;
+	float:left;
+	border: 1px solid rgb(209, 179, 255);
+	border-radius:10px;
+	padding: 5px;
+	padding-top:15px;
+	margin: 5px;
+	text-align:center;
+	font-size:25px;
+	color:white;
+}
+
+#q{
+	outline:none;
+}
+
+#title{
+	width:1185px;
+	height:55px;
+}
+.header{
+	display:inline-block;
+	height:60px;
+	padding-top:10px;
+}
+
+#apology{
+	font-size:20px;
+	width:1185px;
+}
+
+img #chances{
+	align:center;
+}
+#chances{
+	font-size:15px;
+	padding:none;
+}

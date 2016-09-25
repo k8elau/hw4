@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>homework 4</title>
+    <link rel = "stylesheet" type = "text/css" href = "css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+</head>
+
+<body>
+
+<form action="http://api.openweathermap.org/data/2.5/weather" method="get">
+	<input type="text" value="type a location!" name="q" id="q"/>
+	<input type="hidden" name="appid" value="f68761ba49334bd23e3729d832fbc3a3">
+	<input type="hidden" name="mode" value="html">
+	<input type="submit" name="search" value="search" id="search">
+</form>
+
+<div id="title">Northern Lights Forecaster</div>
+<div class="header">Location</div>
+<div class="header">Description</div>
+<div class="header">Percent Cloudiness</div>
+<div class="header">Overall Chance</div>
+
+<!--    code.jquery.com, minified version  -->
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    
+    <script>
+    //get the form(s) and add event listener on submit
+    $('form').on('submit', handleSubmit);
+        function handleSubmit(event){
+            //don't leave the page! 
+            event.preventDefault();
+            
+            var formData={
+                q: $('#q').val(), //document.getElementById('q').value
+                appid: 'f68761ba49334bd23e3729d832fbc3a3',
+                mode: 'json',
+                units: 'metric'
+            };
+            
+            $.ajax({
+                url: 'http://api.openweathermap.org/data/2.5/weather',
+                method: 'get',
+                data: formData
+                
+            }).done(gotData).fail(handleError)
+        }
+        
+        function gotData(data){
+            console.log(data);
+
+            if(data.coord.lat < 55){
+                var sorryDiv = document.createElement("DIV");
+                // give this an ID, so the div takes up the whole row
+                sorryDiv.id="apology";
+                sorryDiv.innerHTML = "Sorry, " + data.name + " is too far south with a latitude of " + data.coord.lat + " so it is extremely unlikely you will see the Northern Lights on any given day, unless there is a particularly strong geomagnetic storm. Typically latitudes higher than 55 degrees have a better chance of seeing the lights. Pick a specific location more north! "
+                document.body.appendChild(sorryDiv);
+            }
+            else{
+            	var myDiv = document.createElement("DIV");
+            	var location = document.createTextNode(data.name);
+            	myDiv.appendChild(location);
+            	document.body.appendChild(myDiv);
+
+            	var mySkiesDiv = document.createElement("DIV");
+            	var skies = document.createTextNode(data.weather[0].description);
+            	mySkiesDiv.appendChild(skies);
+            	document.body.appendChild(mySkiesDiv);
+
+            	var myCloudsDiv = document.createElement("DIV");
+            	var clouds = document.createTextNode(data.clouds.all);
+            	myCloudsDiv.appendChild(clouds);
+            	document.body.appendChild(myCloudsDiv);
+
+            	var chancesDiv = document.createElement("DIV");
+                chancesDiv.id="chances";
+            	document.body.appendChild(chancesDiv);
+
+            	checkChance(data.clouds.all, data.sys.sunset, chancesDiv);
+            }
+
+
+        }
+        
+        function checkChance(cloudiness, timestamp, chancesDiv){
+        	var time = new Date(timestamp*1000);
+            var happy = document.createElement("IMG");
+            happy.setAttribute("src", "happy.png");
+        	if (cloudiness >= 0 && cloudiness < 25){
+        		chancesDiv.innerHTML = "Look up at " + time.getHours() + ":" + time.getMinutes() + " UTC! (sunset) Make sure to face the north into the horizon.";
+        	}
+        	else if (cloudiness >= 25 && cloudiness < 75){
+        		//post an image of a :/
+                chancesDiv.innerHTML = "You have an okay chance of seeing the lights. Look up every now and then when the clouds break!"
+        	}
+        	else if(cloudiness >= 75 && cloudiness <=100){
+        		//post an image of :(
+                chancesDiv.innerHTML = "There's a very small chance you will see the lights. It is too cloudy."
+        	}
+        }
+
+        function handleError(err){
+            console.log('error', err);
+        }
+    </script>
+    
+</body>
+</html>
