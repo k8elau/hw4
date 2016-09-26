@@ -36,10 +36,10 @@ app.get('*', function(req, res){
 });
 
 //start server
-app.listen(3001);
+app.listen(8080);
 
 //prints in terminal
-console.log('listening on port 3001');
+console.log('listening on port 8080');
 
 //routing
 //HTTP method + URL path -> function
