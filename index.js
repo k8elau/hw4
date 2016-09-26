@@ -19,18 +19,11 @@ app.get('/profile/:name', function(req, res){
     });
 });
 
-
+//sends a random emoticon at the /random path
 app.get('/random', function(req,res){
-        res.send(String(Math.random()));
-        });
-
-//move api project into public directory
-//for homework (the dynamic route)
-//make a route to like /random
-//app.get('/random' etc etc)
-//res.send(etc etc);
-
-
+    var faces = [":~)", ":-(", ">:)", ":/", ">:(", ";_;"];
+    res.send(faces[Math.floor((Math.random() * 6)+1)]);
+});
 
 //allows user to access everyting in the public folder
 app.use('/static', express.static('public'));
